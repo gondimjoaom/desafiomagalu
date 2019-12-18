@@ -21,7 +21,7 @@ class addProduct(Resource):
     args.add_argument('id', type=str, required=True, help="This field cannot be left blank")
     args.add_argument('title', type=str, required=True, help="This field cannot be left blank")
     args.add_argument('reviewScore', type=float)
-
+    @jwt_required
     def put(self, email):
         client = ClientModel.find_by_email(email)
         productData = addProduct.args.parse_args()
@@ -78,7 +78,7 @@ class Client (Resource):
             return {'message': 'Client deleted'}
 
         return {'message': 'Client not found.'}, 404
-    
+    @jwt_required
     def put(self, email):
         data = Client.args.parse_args()
         client = ClientModel.find_by_email(email)
@@ -125,7 +125,7 @@ class ClientLogin(Resource):
         if client:
             accessToken = create_access_token(identity=client.email)
             return {'accessToken': accessToken}, 200
-        return {'message': 'Username or password incorrect'}, 401
+        return {'message': 'Client doesnt exists or email is incorrect'}, 401
 
 class ClientLogout(Resource):
     @jwt_required
