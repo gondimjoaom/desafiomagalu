@@ -36,7 +36,7 @@ Exemplos de requisição:
 - /addProduct/\<email> para adicionar um produto ao usuário de \<email>;
 	- o body da requisição deve conter: price, image, brand, id, title e reviewScore (não obrigatório);
 
-###TO DO:
+### TO DO:
  - [ ] Pegar dados do produto pela url + id;
  - [ ] Utilizar outro banco (Mongo, MySQL) no lugar de SQLite3;
  - [ ] Separar códigos de lista de produto para melhor visualização da aplicação.
