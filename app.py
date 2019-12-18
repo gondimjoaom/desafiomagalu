@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_restful import Resource, Api
-from resources.client import Clients, Client, ClientRegister, ClientLogin, ClientLogout
+from resources.client import Clients, Client, ClientRegister, ClientLogin, ClientLogout, addProduct
 from flask_jwt_extended import JWTManager #gerenciar autenticacao
 from blacklist import BLACKLIST
 
@@ -27,10 +27,11 @@ def revoked_token():
     return jsonify({'message': 'You have been logged out'}), 401 #dicionario aqui em app não é reconhecido diretamente, por isso o uso do jsonify
 
 api.add_resource(Clients, '/clients')
-api.add_resource(Client, '/client/<int:client_id>')
+api.add_resource(Client, '/client/<string:email>')
 api.add_resource(ClientRegister, '/signup')
 api.add_resource(ClientLogin, '/login')
 api.add_resource(ClientLogout, '/logout')
+api.add_resource(addProduct, '/addProduct/<string:email>')
 
 if __name__ == '__main__':
     from sql_alchemy import banco
