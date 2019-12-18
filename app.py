@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_restful import Resource, Api
-from resources.client import Clients, Client, ClientRegister, ClientLogin, ClientLogout, addProduct
+from resources.client import Clients, Client, ClientRegister, ClientLogin, ClientLogout, addProduct, showClientProduct
 from flask_jwt_extended import JWTManager #gerenciar autenticacao
 from blacklist import BLACKLIST
 
@@ -32,6 +32,8 @@ api.add_resource(ClientRegister, '/signup')
 api.add_resource(ClientLogin, '/login')
 api.add_resource(ClientLogout, '/logout')
 api.add_resource(addProduct, '/addProduct/<string:email>')
+api.add_resource(showClientProduct, '/showClientProduct/<string:email>/<string:id>')
+
 
 if __name__ == '__main__':
     from sql_alchemy import banco

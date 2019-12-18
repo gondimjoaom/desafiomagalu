@@ -36,6 +36,26 @@ class addProduct(Resource):
             return client.json(), 200
         return {'message': 'Product does not exist.'}, 400
 
+class showClientProduct (Resource):
+    def get(self, email, id):
+        client = ClientModel.find_by_email(email)
+        try:
+            produto = client.productList[id]
+            if produto['reviewScore']:
+                return {
+                    "title": produto['title'],
+                    "image": produto['image'],
+                    "price": produto['price'],
+                    "reviewScore": produto['reviewScore']
+                }
+            return {
+                    "title": produto['title'],
+                    "image": produto['image'],
+                    "price": produto['price']
+            }
+        except:
+            return {'message': 'Product is not in clients list.'}, 400
+
 class Client (Resource):
     args = reqparse.RequestParser()
     args.add_argument('name', type=str)
