@@ -1,29 +1,24 @@
 from sql_alchemy import banco
+import copy
 
 class ClientModel(banco.Model):
     __tablename__ = 'clients'
-    client_id = banco.Column(banco.Integer, primary_key=True)
+    #client_id = banco.Column(banco.Integer, primary_key=True)
     name = banco.Column(banco.String(40))
-    email = banco.Column(banco.String(40))
+    email = banco.Column(banco.String(40), primary_key=True)
+    productList = banco.Column(banco.JSON)
 
-    def __init__(self, client_id, name, email): #não passa o id e o sistema vai incrementando ao ver vazio
+    def __init__(self, productList, name, email): #não passa o id e o sistema vai incrementando ao ver vazio
         self.name = name
         self.email = email
-    
+        self.productList = productList
+
     def json(self):
         return {
-            'client': self.client_id,
             'login': self.name,
-            'email': self.email
+            'email': self.email,
+            'productList': self.productList
         }
-
-    @classmethod
-    def find_client(cls, client_id): #cls é a mesma coisa de escrever HotelModel poe ex
-        client = cls.query.filter_by(client_id=client_id).first() #faz uma consulta usando um método de banco.Model
-        #SELECT * FROM hotels WHERE hotel_id=$hotel_id LIMIT 1
-        if client:
-            return client
-        return None
     
     @classmethod
     def find_by_email(cls, email): #cls é a mesma coisa de escrever HotelModel poe ex
@@ -40,6 +35,18 @@ class ClientModel(banco.Model):
 
     def updateClient(self, name):
         self.name = name
+    
+    def updateProductList(self, price, image, brand, id, title, reviewScore):
+        newProductList = copy.deepcopy(self.productList)
+        newProductList[id] = {
+            "price": price,
+            "image": image,
+            "brand": brand,
+            "title": title,
+            "reviewScore": reviewScore 
+        }
+        self.productList = copy.deepcopy(newProductList)
+        #print(self.productList)
 
     def deleteClient(self):
         banco.session.delete(self)
